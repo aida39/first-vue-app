@@ -19,6 +19,37 @@ const addCount = () => {
   count.value++;
 };
 
+import { reactive, computed } from 'vue';
+
+const state = reactive({
+  count: 0,
+});
+
+const addCounter = () => {
+  state.count++;
+};
+
+// 10.入力フォーム
+const clickButton = () => {
+  console.log(message);
+};
+
+// 11.Computedプロパティ
+const user = reactive({
+  firstName: 'John',
+  lastName: 'Doe',
+});
+const fullName = computed(() => `${user.firstName} ${user.lastName}`);
+
+// usersのadminがtrueのレコードだけ取り出す処理
+const users = [
+  { id: 1, name: 'John Doe', email: 'john@test.com', admin: true },
+  { id: 2, name: 'Jane Doe', email: 'jane@example.com', admin: false },
+  { id: 3, name: 'Kevin MacDonald', email: 'kevin@test.com', admin: false },
+];
+const adminUsers = computed(() => users.filter((user) => user.admin === true));
+
+
 </script>
 
 <template>
@@ -47,13 +78,30 @@ const addCount = () => {
   <!-- hrefに変数が設定できるということはユーザの行う行動によって変数の値を変更することでユーザの行動に応じたリンク先を設定できるようになることを意味します。ボタンをクリックするとGoogleのリンクからYahooへのリンクへと変更することもできます。 -->
   <!-- imgタグのsrc属性やbuttonタグのdisabled属性でもよく利用される -->
 
-  
+
   <p class="active">test</p>
   <p :class="{ active: isActive }">v-bindで&lt;style&gt;.activeクラスを呼び出す</p>
 
   <!-- ref関数を利用してreactiveな変数を設定する -->
-  <button type="button" @click="addCount">count is: {{ count }}</button>
+  <button type="button" @click="addCount">ref関数 count is: {{ count }}</button>
 
+  <!-- reactive関数を利用してreactiveな変数を設定する -->
+  <button type="button" @click="addCounter">
+    reactive関数 count is: {{ state.count }}
+  </button>
+
+  <h2>10.入力フォーム</h2>
+  <input v-model="message" />
+  <div><button @click="clickButton">Click</button></div>
+
+
+  <h2>11.Computedプロパティ</h2>
+  <h3>Computedを使用しない fullName: {{ user.firstName }} {{ user.lastName }}</h3>
+  <h3>Computedを使用 fullName: {{ fullName }}</h3>
+
+  <div v-for="user in adminUsers" :key="user.id">
+    <div>{{ user.id }} {{ user.name }} {{ user.email }}</div>
+  </div>
 
 </template>
 
